@@ -96,7 +96,7 @@ copy_file() {
     if [ -e "$dest" ]; then
         if is_user_data "$rel_path"; then
             [ "$FORCE_UPDATE" = true ] && echo -e "${YELLOW}  ! Protected: $rel_path${NC}"
-            return
+            return 0
         elif [ "$FORCE_UPDATE" = true ]; then
             if [ "$DRY_RUN" = true ]; then
                 echo -e "${BLUE}[DRY RUN] Would update: $rel_path${NC}"
