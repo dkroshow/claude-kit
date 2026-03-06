@@ -24,6 +24,8 @@
 
 Update `.project/CURRENT_WORK.md` to reflect the session's work:
 - **Move completed items** from "Active Work" to "Recently Completed" with date and status
+- **Prune "Recently Completed"** — keep only the 3 most recent entries. Move older entries to `.project/PAST_WORK.md` (prepend them, newest first). Create the file if it doesn't exist.
+- **Prune "Session Notes"** — keep only the 3 most recent sessions. Drop older notes (they're preserved in git history; important bits should already be in learnings).
 - **Update active items** with current status, blockers, next steps
 - **Add new items** if work was started but not finished
 - **Update "Up Next"** if priorities shifted
