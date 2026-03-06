@@ -1,6 +1,6 @@
 # Wrap Up
 
-**Purpose:** End-of-session command to persist context for future sessions. Updates CURRENT_WORK.md and captures structured learnings so the next session doesn't re-research what you just figured out.
+**Purpose:** End-of-session command to persist context for future sessions. Updates CURRENT_WORK.md, detects stale knowledge, and captures structured learnings so the next session doesn't re-research what you just figured out.
 
 ## Usage
 
@@ -28,7 +28,31 @@ Update `.project/CURRENT_WORK.md` to reflect the session's work:
 - **Add new items** if work was started but not finished
 - **Update "Up Next"** if priorities shifted
 
-### Step 3. Capture Learnings
+### Step 3. Check Knowledge Staleness
+
+Check whether this session's code changes affect files covered by existing knowledge artifacts.
+
+1. **Read `.project/file-knowledge-map.md`** — if it doesn't exist, skip this step entirely.
+
+2. **Get changed files** — use the git diff/log output from Step 1 to identify source files changed this session.
+
+3. **Cross-reference** — check if any changed files appear in the file-knowledge map's "Source File" column.
+
+4. **If matches found**, present them to the user:
+   ```
+   These knowledge artifacts cover files you changed this session:
+   - learnings/20260301-auth-bug.md (covers src/auth/login.ts, src/auth/middleware.ts)
+   - docs/api-layer.md (covers src/api/routes.ts)
+
+   Do any of these need updating, or are they still current?
+   ```
+
+5. **Based on user response:**
+   - **Still current** → update the `Last Verified` date for those entries in the file-knowledge map
+   - **Needs updating** → update the artifact now while you're still in context, then update `Last Verified`
+   - **Mixed** → handle each artifact individually
+
+### Step 4. Capture Learnings
 
 Check whether this session produced knowledge that would save a future session time.
 
@@ -46,6 +70,8 @@ Check whether this session produced knowledge that would save a future session t
    - **Machine-wide** (e.g., Python version, CLI tool quirks): Write to `~/.claude/learnings/`
 
 2. **Create a learning file** at `{learnings-dir}/{YYYYMMDD}-{topic-kebab-case}.md`:
+
+   **Standard format:**
    ```markdown
    ---
    type: [environment | gotcha | pattern]
@@ -71,12 +97,31 @@ Check whether this session produced knowledge that would save a future session t
    [Relevant file paths, if applicable]
    ```
 
-3. **Update the index** — Add a row to `{learnings-dir}/index.md`:
+   **For gotchas with multiple failure modes**, replace "What Didn't Work" / "What Works" with a structured table:
+   ```markdown
+   ## Symptoms & Fixes
+
+   | Symptom | Cause | Fix |
+   |---|---|---|
+   | [Observable symptom 1] | [Root cause] | [Solution] |
+   | [Observable symptom 2] | [Root cause] | [Solution] |
+   ```
+   Use the table format when there are 2+ distinct failure modes. For simple single-issue gotchas, the prose format is fine.
+
+3. **Update the learning index** — Add a row to `{learnings-dir}/index.md`:
    ```
    | YYYY-MM-DD | type | tags | one-line summary | filename.md |
    ```
 
-4. **If a learning is critical enough for always-loaded** (dangerous to miss, applies to every session):
+4. **Update the file-knowledge map** — If the learning has a `## Key Files` section and is project-specific, add entries to `.project/file-knowledge-map.md`:
+   ```
+   | {source-file-path} | learnings/{filename}.md | {today's date} |
+   ```
+   Add one row per file listed in `## Key Files`. Create the map file if it doesn't exist.
+
+5. **Clean up orphaned entries** — If `.project/file-knowledge-map.md` exists, scan for entries pointing to knowledge artifacts that no longer exist. Remove orphaned rows.
+
+6. **If a learning is critical enough for always-loaded** (dangerous to miss, applies to every session):
    - Recommend adding it to CLAUDE.md: "This seems critical enough for CLAUDE.md — should I add it?"
    - Only add with user approval
 
@@ -85,33 +130,36 @@ Check whether this session produced knowledge that would save a future session t
 - `gotcha` — Pitfalls, failures, things that don't work
 - `pattern` — Conventions, what works, decisions and rationale
 
-### Step 4. Update Docs (if applicable)
+**Consider escalating to an agent:** If this session involved extended debugging (3+ cycles of hypothesis → test → failure) in a specific domain, suggest creating a domain-expert agent rather than just a learning: "This debugging session was complex enough that a domain-expert agent might be more valuable than a learning. Want me to create an agent spec in `agents/` for [domain area]?"
+
+### Step 5. Update Docs (if applicable)
 
 If the session involved changes that affect documented behavior:
 - Architecture changes → update relevant docs
 - New commands/features → update relevant docs
 - Only update docs that already exist
 
-### Step 5. Report
+### Step 6. Report
 
 ```
 Wrap-up complete:
 - CURRENT_WORK.md: [what changed]
+- Staleness: [artifacts flagged and resolved, or "no stale artifacts" or "no index yet"]
 - Learnings: [what was captured, or "none this session"]
 - Docs: [which files updated, or "none needed"]
 ```
 
-If `--quick` was passed, only do Steps 2 and 5.
+If `--quick` was passed, only do Steps 1, 2, and 6 (skip staleness check, learnings, and docs).
 
-If `--blurb` was passed, proceed to Step 7 after committing.
+If `--blurb` was passed, proceed to Step 8 after committing.
 
-### Step 6. Commit
+### Step 7. Commit
 
 1. Stage the files that were updated
 2. Commit with message: `chore: wrap-up session context`
 3. Do NOT push unless the user asks
 
-### Step 7. Generate Reload Blurb (only with `--blurb`)
+### Step 8. Generate Reload Blurb (only with `--blurb`)
 
 If `--blurb` was passed, generate a compact reload blurb after wrap-up completes. This blurb is designed to be pasted into a fresh session after `/clear`.
 
@@ -148,4 +196,4 @@ If `--blurb` was passed, generate a compact reload blurb after wrap-up completes
 - `/_blurb` — standalone reload blurb (without wrap-up)
 - `/_cycle` — the main workflow pipeline
 
-**Last Updated**: 2026-03-02
+**Last Updated**: 2026-03-05

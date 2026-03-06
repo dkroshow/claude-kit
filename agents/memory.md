@@ -46,7 +46,10 @@ Return a brief (under 500 words) organized by relevance:
 ### Failure Knowledge
 - [Learning]: [What didn't work and why — avoid repeating these mistakes]
 
-If nothing relevant is found, say so clearly. Don't force connections.
+If nothing relevant is found, report a knowledge gap:
+
+### Knowledge Gap
+No prior knowledge exists for **[task area/component name]**. Consider creating a learning or subsystem doc after this work if you discover something worth preserving.
 
 ## Important
 

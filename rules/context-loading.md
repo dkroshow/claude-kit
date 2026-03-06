@@ -21,7 +21,7 @@ Typo fixes, formatting changes, simple renames, git operations, one-line changes
 
 **Step 3: Does the task involve a specific component, file, or area?**
 The user mentions a module, service, API, file, or system by name.
-> YES: Scan both learnings indexes for entries tagged with or related to that area. Read any matching entries.
+> YES: Scan both learnings indexes for entries tagged with or related to that area. Read any matching entries. Also check `.project/trigger-table.md` if it exists — if the files you're about to modify match a pattern in the trigger table, load the suggested agent and/or knowledge artifact.
 > NO: Continue to Step 4.
 
 **Step 4: Is this debugging or troubleshooting?**

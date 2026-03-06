@@ -35,7 +35,8 @@ while [[ $# -gt 0 ]]; do
             echo "  -h, --help    Show this help message"
             echo ""
             echo "The --force option updates templates but never touches:"
-            echo "  CURRENT_WORK.md, backlog/BACKLOG.md, completed/CHANGELOG.md, learnings/index.md"
+            echo "  CURRENT_WORK.md, backlog/BACKLOG.md, completed/CHANGELOG.md, learnings/index.md,"
+            echo "  file-knowledge-map.md, trigger-table.md"
             exit 0
             ;;
         *) echo -e "${RED}Unknown option: $1${NC}"; exit 1 ;;
@@ -78,6 +79,8 @@ USER_DATA_FILES=(
     "backlog/BACKLOG.md"
     "completed/CHANGELOG.md"
     "learnings/index.md"
+    "file-knowledge-map.md"
+    "trigger-table.md"
 )
 
 is_user_data() {
