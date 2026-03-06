@@ -22,12 +22,13 @@
 
 ### Step 2. Update CURRENT_WORK.md
 
-Update `.project/CURRENT_WORK.md` to reflect the session's work:
-- **Move completed items** from "Active Work" to "Recently Completed" with date and status
+Update `.project/CURRENT_WORK.md` to reflect the session's work. CURRENT_WORK.md is a **thin index** — pointers to specs/plans, not duplicated content. Keep it small so session boot stays cheap.
+
+- **Active table** — update status and phase for active items. Add new rows for work started this session. Each row should point to its spec/plan location.
+- **Move completed items** from "Active" to "Recently Completed" with date. The entry is just the item name + location pointer — detail lives in the spec/plan.
 - **Prune "Recently Completed"** — keep only the 3 most recent entries. Move older entries to `.project/PAST_WORK.md` (prepend them, newest first). Create the file if it doesn't exist.
 - **Prune "Session Notes"** — keep only the 3 most recent sessions. Drop older notes (they're preserved in git history; important bits should already be in learnings).
-- **Update active items** with current status, blockers, next steps
-- **Add new items** if work was started but not finished
+- **Small fixes without specs** — one-line entries are fine (e.g., `| 2026-03-06 | Fixed init.sh return codes | — |`). Don't create specs just for index completeness.
 - **Update "Up Next"** if priorities shifted
 
 ### Step 3. Check Knowledge Staleness

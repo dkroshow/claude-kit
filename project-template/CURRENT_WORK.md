@@ -4,35 +4,19 @@
 
 ---
 
-## Active Work
+## Active
 
-### [Item/Epic Name]
-
-**Status**: [Not Started | In Progress | Blocked | In Review]
-**Epic**: [Link to epic in backlog/ if applicable]
-**Started**: [DATE]
-
-**Objective**: [One sentence describing what this accomplishes]
-
-**Current Phase**: [Which phase of the plan]
-
-**Tasks**:
-- [ ] Task 1
-- [ ] Task 2
-- [ ] Task 3
-
-**Blockers**: [None | Description of blockers]
-
-**Location**: `.project/active/[item_name]/`
+| Item | Status | Phase | Location |
+|---|---|---|---|
+| [Item Name] | In Progress | [Phase N] | `.project/active/[item_name]/` |
 
 ---
 
 ## Recently Completed
 
-### [DATE]: [Item Name]
-- Brief summary of what was accomplished
-- Key deliverables produced
-- Any notable learnings
+| Date | Item | Location |
+|---|---|---|
+| [DATE] | [Item Name] | `.project/active/[item_name]/` |
 
 ---
 
@@ -40,14 +24,11 @@
 
 1. [Next priority item from backlog]
 2. [Following item]
-3. [Future consideration]
 
 ---
 
 ## Session Notes
 
 ### [DATE]
-- What was worked on
-- Progress made
-- Decisions made
-- Questions or blockers encountered
+- Key decisions made
+- Blockers encountered
