@@ -83,8 +83,8 @@
 
 **Goal**: Completed work log.
 
-1. Read `.project/completed/CHANGELOG.md`
-2. Scan `.project/completed/` for archived items
+1. Read `.project/PAST_WORK.md`
+2. Scan `.project/completed/` for archived spec/plan folders
 3. Present chronological summary of completed work
 
 ---
@@ -99,8 +99,8 @@
 2. **Confirm with user** what will be moved
 3. **Archive**:
    - Move item directory: `git mv .project/active/{item} .project/completed/{YYYYMMDD}_{item}`
-   - Update `.project/completed/CHANGELOG.md` with completion record
    - Update `.project/CURRENT_WORK.md` — move from active to recently completed
+   - Prune recently completed if >3 entries — overflow to `.project/PAST_WORK.md`
    - Update `.project/backlog/BACKLOG.md` if item was part of an epic
 4. **Check epic completion** — if all items in an epic are done:
    - Move epic file to completed/
@@ -145,7 +145,7 @@
 - Always confirm before moving/archiving files
 - Keep reports concise — surface the important information
 - Use `git mv` for archiving to preserve history
-- Update all affected files atomically (CURRENT_WORK, BACKLOG, CHANGELOG)
+- Update all affected files atomically (CURRENT_WORK, BACKLOG, PAST_WORK)
 
 ---
 

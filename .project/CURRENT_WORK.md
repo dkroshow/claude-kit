@@ -1,6 +1,6 @@
 # Current Work
 
-**Last Updated**: 2026-03-07 (session 4)
+**Last Updated**: 2026-03-07 (session 5)
 
 ---
 
@@ -14,9 +14,9 @@ _No active items._
 
 | Date | Item | Location |
 |---|---|---|
+| 2026-03-07 | CURRENT_WORK.md thin index + PAST_WORK.md archive | `commands/_wrapup.md`, `project-template/` |
 | 2026-03-07 | Context gauge utility (context window utilization reporting) | `conversation-logger/clogs/gauge.py`, `.project/active/context-gauge/` |
 | 2026-03-07 | Conversation search integration (CLI + rules + memory agent) | `.project/active/conversation-search/` |
-| 2026-03-07 | Schema sync: `is_tool_result`/`is_human` in James schema.sql | `/Users/kd/Code/james/src/db/schema.sql` |
 
 ---
 
@@ -30,23 +30,18 @@ _No active items._
 
 ## Session Notes
 
+### 2026-03-07 (session 5)
+- Reworked CURRENT_WORK.md as thin index (tables with location pointers, not inline content)
+- Added PAST_WORK.md as lightweight archive, replaced heavyweight CHANGELOG.md
+- Added pruning rules to `/_wrapup` Step 2 (keep 3 recent completed + 3 session notes)
+- Decided against separate `/_tidy` command — wrapup covers cleanup
+
 ### 2026-03-07 (session 4)
 - Built context gauge utility: `conversation-logger/clogs/gauge.py`
-- Reads JSONL directly (no DB dependency), auto-detects current session via CWD → project slug → newest .jsonl
-- Reports: context size, remaining capacity, burn rate, estimated turns remaining, compression detection
-- Empirical findings: compression triggers at ~165K tokens (median), hard ceiling ~170K, 57 compression events across 1,502 transcripts
-- Slug derivation: full absolute path with `/` replaced by `-` (not relative to HOME — learned from bug during implementation)
-- Updated `rules/conversation-history.md` with gauge CLI reference
-- Standard-tier cycle: spec + plan at `.project/active/context-gauge/`
+- Compression triggers at ~165K tokens (median), hard ceiling ~170K
+- Slug derivation: full absolute path with `/` replaced by `-`
 
 ### 2026-03-07 (session 3)
-- Added CLI to search.py: `search`, `recent`, `session` subcommands via argparse
-- Created `rules/conversation-history.md` — global rule so all sessions know the conversation DB exists
-- Updated `rules/context-loading.md` — conversation history as Tier 2 retrieval source, added to "Don't Re-Research" list
-- Extended `agents/memory.md` — suggests conversation search when learnings have gaps
-- Full Standard-tier cycle: spec + plan at `.project/active/conversation-search/`
-
-### 2026-03-07 (session 2)
-- Added `is_tool_result` and `is_human` columns to James `schema.sql` — schema file now matches live DB
-- Change is in James repo (`/Users/kd/Code/james/src/db/schema.sql`), not committed yet (other uncommitted James changes present)
+- Conversation search CLI + rules + memory agent integration
+- Created `rules/conversation-history.md` as global rule
 
