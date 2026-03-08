@@ -6,6 +6,7 @@ utilization: current size, remaining capacity, burn rate, and estimated
 turns until compression.
 
 No database required — reads JSONL files directly.
+Uses session resolver for accurate multi-session disambiguation.
 
 CLI usage:
     python3 gauge.py                    # auto-detect current session
@@ -19,79 +20,14 @@ import argparse
 import json
 import os
 import sys
+import time
 from pathlib import Path
+
+from session import resolve_session, resolve_all_sessions
 
 # Empirical compression threshold from analysis of 1,502 transcripts.
 # Median peak before compression: 165K. Hard ceiling: 170K.
 DEFAULT_THRESHOLD = 165_000
-
-
-def find_current_transcript(cwd=None):
-    """
-    Auto-detect the current session's JSONL transcript.
-
-    Derives the project slug from CWD, then finds the newest .jsonl
-    file in ~/.claude/projects/<slug>/.
-    """
-    if cwd is None:
-        cwd = os.getcwd()
-
-    home = os.path.expanduser("~")
-    # Derive slug: full absolute path with / replaced by -
-    # e.g. /Users/kd/claude-kit → -Users-kd-claude-kit
-    slug = cwd.replace("/", "-")
-
-    project_dir = Path(home) / ".claude" / "projects" / slug
-    if not project_dir.is_dir():
-        return None
-
-    jsonl_files = list(project_dir.glob("*.jsonl"))
-    if not jsonl_files:
-        return None
-
-    # Newest by modification time
-    return str(max(jsonl_files, key=lambda f: f.stat().st_mtime))
-
-
-def find_all_transcripts(max_age_hours=24):
-    """
-    Find the newest JSONL transcript for every project directory.
-
-    Returns list of dicts with: project_slug, transcript_path, mtime.
-    Only includes transcripts modified within max_age_hours.
-    """
-    import time
-
-    home = os.path.expanduser("~")
-    projects_dir = Path(home) / ".claude" / "projects"
-    if not projects_dir.is_dir():
-        return []
-
-    cutoff = time.time() - (max_age_hours * 3600)
-    results = []
-
-    for project_dir in projects_dir.iterdir():
-        if not project_dir.is_dir():
-            continue
-
-        jsonl_files = list(project_dir.glob("*.jsonl"))
-        if not jsonl_files:
-            continue
-
-        newest = max(jsonl_files, key=lambda f: f.stat().st_mtime)
-        mtime = newest.stat().st_mtime
-        if mtime < cutoff:
-            continue
-
-        results.append({
-            "project_slug": project_dir.name,
-            "transcript_path": str(newest),
-            "mtime": mtime,
-        })
-
-    # Sort by most recently modified
-    results.sort(key=lambda r: r["mtime"], reverse=True)
-    return results
 
 
 def extract_usage(jsonl_path):
@@ -237,20 +173,36 @@ def main():
 
     # --all mode: show all active sessions
     if args.all:
-        transcripts = find_all_transcripts(max_age_hours=args.hours)
-        if not transcripts:
+        sessions = resolve_all_sessions()
+        if not sessions:
             print("No active sessions found.", file=sys.stderr)
             sys.exit(1)
 
+        # Filter by age if --hours specified
+        cutoff = time.time() - (args.hours * 3600)
+
         all_metrics = []
-        for t in transcripts:
-            usage_data = extract_usage(t["transcript_path"])
+        seen_sessions = set()
+        for s in sessions:
+            transcript = s.get("transcript_path")
+            if not transcript or not os.path.exists(transcript):
+                continue
+            session_id = s.get("session_id", Path(transcript).stem)
+            if session_id in seen_sessions:
+                continue
+            seen_sessions.add(session_id)
+            if os.path.getmtime(transcript) < cutoff:
+                continue
+            usage_data = extract_usage(transcript)
             if not usage_data:
                 continue
             metrics = compute_metrics(usage_data, threshold=args.threshold, window=args.window)
-            metrics["session_id"] = Path(t["transcript_path"]).stem
-            metrics["project_slug"] = t["project_slug"]
-            metrics["transcript_path"] = t["transcript_path"]
+            metrics["session_id"] = session_id
+            proj_dir = s.get("project_dir", "")
+            metrics["project_slug"] = proj_dir.replace("/", "-") if proj_dir else Path(transcript).parent.name
+            metrics["transcript_path"] = transcript
+            metrics["claude_pid"] = s.get("claude_pid")
+            metrics["pane"] = s.get("pane")
             all_metrics.append(metrics)
 
         if not all_metrics:
@@ -286,9 +238,11 @@ def main():
             print(f"Error: File not found: {jsonl_path}", file=sys.stderr)
             sys.exit(1)
     else:
-        jsonl_path = find_current_transcript()
-        if not jsonl_path:
-            print("Error: No transcript found for current project directory.", file=sys.stderr)
+        result = resolve_session()
+        if result and result.get("transcript_path"):
+            jsonl_path = result["transcript_path"]
+        else:
+            print("Error: No transcript found for current session.", file=sys.stderr)
             print(f"  CWD: {os.getcwd()}", file=sys.stderr)
             print("  Use --file to specify a JSONL path explicitly.", file=sys.stderr)
             sys.exit(1)
