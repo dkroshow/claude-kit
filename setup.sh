@@ -202,6 +202,7 @@ echo "Configuring hooks..."
 configure_hooks() {
     local settings_file="$TARGET_DIR/settings.json"
     local hook_path="$TARGET_DIR/hooks/precompact-capture.sh"
+    local logger_dir="$SOURCE_DIR/conversation-logger/hooks"
 
     local hook_config='{
   "hooks": {
@@ -212,6 +213,28 @@ configure_hooks() {
           {
             "type": "command",
             "command": "'"$hook_path"'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'"$logger_dir/on-assistant-turn.sh"'"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'"$logger_dir/on-session-end.sh"'"
           }
         ]
       }
@@ -263,16 +286,20 @@ write_hook_paths() {
         return
     fi
 
+    local logger_hooks_dir="$SOURCE_DIR/conversation-logger/hooks"
+
     cat > "$config_file" << EOF
 {
-  "version": 1,
+  "version": 2,
   "resolved_at": "$(date -Iseconds)",
   "source": "$SOURCE_DIR",
   "hooks": {
     "query-transcript": "$hooks_dir/query-transcript.py",
     "parse-transcript": "$hooks_dir/parse-transcript.py",
     "capture": "$hooks_dir/capture.sh",
-    "precompact-capture": "$hooks_dir/precompact-capture.sh"
+    "precompact-capture": "$hooks_dir/precompact-capture.sh",
+    "on-assistant-turn": "$logger_hooks_dir/on-assistant-turn.sh",
+    "on-session-end": "$logger_hooks_dir/on-session-end.sh"
   }
 }
 EOF
