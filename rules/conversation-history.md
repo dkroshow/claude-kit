@@ -14,6 +14,10 @@ python3 ~/claude-kit/conversation-logger/clogs/search.py recent --project -Users
 
 # Session details (message count, tokens, tool calls)
 python3 ~/claude-kit/conversation-logger/clogs/search.py session <session-uuid>
+
+# Context window gauge (how full is the current session's context?)
+python3 ~/claude-kit/conversation-logger/clogs/gauge.py
+python3 ~/claude-kit/conversation-logger/clogs/gauge.py --json  # machine-parseable
 ```
 
 ## When to Use
