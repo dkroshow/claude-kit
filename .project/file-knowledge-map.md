@@ -13,4 +13,4 @@
 | Source File | Knowledge Artifact | Last Verified |
 |---|---|---|
 | commands/_wrapup.md | learnings/20260306-staleness-at-write-time.md | 2026-03-06 |
-| rules/context-loading.md | learnings/20260306-staleness-at-write-time.md | 2026-03-06 |
+| rules/context-loading.md | learnings/20260306-staleness-at-write-time.md | 2026-03-07 |

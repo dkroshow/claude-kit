@@ -4,4 +4,6 @@ Archive of completed work, moved here from CURRENT_WORK.md during wrap-up.
 
 ---
 
-*No completed work yet*
+| Date | Item | Location |
+|---|---|---|
+| 2026-03-06 | Memory system enhancements | `.project/active/memory-enhancements/` |

@@ -31,7 +31,13 @@ You will receive:
    Grep pattern="keyword" path="~/.claude/learnings/"
    ```
 
-5. **Synthesize a concise brief** of relevant knowledge
+5. **Suggest conversation history search** if learnings don't fully cover the task:
+   - Note in your output that the main agent should search conversation history
+   - Provide suggested search queries based on the task description
+   - Example: "Suggest searching conversation history: `python3 ~/claude-kit/conversation-logger/clogs/search.py search \"reconciliation WO\"`"
+   - Only suggest this when learnings have gaps — don't suggest it if learnings already cover the topic well
+
+6. **Synthesize a concise brief** of relevant knowledge
 
 ## Output
 
@@ -45,6 +51,10 @@ Return a brief (under 500 words) organized by relevance:
 
 ### Failure Knowledge
 - [Learning]: [What didn't work and why — avoid repeating these mistakes]
+
+### Conversation History (if applicable)
+- Suggested search: `python3 ~/claude-kit/conversation-logger/clogs/search.py search "<query>"`
+- Why: [What gap this might fill that learnings don't cover]
 
 If nothing relevant is found, report a knowledge gap:
 

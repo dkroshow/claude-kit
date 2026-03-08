@@ -41,6 +41,16 @@ If you discovered something that would save a future session time:
 1. Suggest running `/_wrapup` to persist context
 2. Or at minimum, update `.project/CURRENT_WORK.md` with the current status
 
+## Conversation History Search
+
+Past Claude sessions are logged to PostgreSQL and searchable. Use this when learnings and docs don't cover what you need — especially for debugging context, prior decisions, or "I know we discussed this before" moments.
+
+```bash
+python3 ~/claude-kit/conversation-logger/clogs/search.py search "query"
+```
+
+This is a **Tier 2 retrieval action** — use it when the task involves a specific component and learnings don't have a match, or when debugging and you suspect a prior session encountered the same issue.
+
 ## Don't Re-Research What's Already Documented
 
 Before exploring the codebase to understand how something works, check:
@@ -49,3 +59,4 @@ Before exploring the codebase to understand how something works, check:
 - Project docs (often in `docs/`) for existing documentation
 - `.project/research/` for previous deep investigations
 - `.project/CURRENT_WORK.md` for recent work that may already cover the area
+- **Conversation history** — `search.py search "topic"` for past session discussions (see `rules/conversation-history.md`)
