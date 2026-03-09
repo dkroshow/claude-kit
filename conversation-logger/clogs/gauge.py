@@ -23,6 +23,7 @@ import sys
 import time
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from session import resolve_session, resolve_all_sessions
 
 # Empirical compression threshold from analysis of 1,502 transcripts.

@@ -37,11 +37,17 @@ Check whether this session's code changes affect files covered by existing knowl
 
 1. **Read `.project/file-knowledge-map.md`** — if it doesn't exist, skip this step entirely.
 
-2. **Get changed files** — use the git diff/log output from Step 1 to identify source files changed this session.
+2. **Rebuild if empty** — if the map exists but has no data rows (only headers), scan all project learnings for `## Key Files` sections and backfill the map:
+   - Read each learning file in `.project/learnings/` (skip `index.md`)
+   - For each learning with a `## Key Files` section, extract the listed file paths
+   - Add one row per file: `| {source-file-path} | learnings/{filename}.md | {today's date} |`
+   - Report: "Rebuilt file-knowledge map from {N} learnings ({M} file entries)"
 
-3. **Cross-reference** — check if any changed files appear in the file-knowledge map's "Source File" column.
+3. **Get changed files** — use the git diff/log output from Step 1 to identify source files changed this session.
 
-4. **If matches found**, present them to the user:
+4. **Cross-reference** — check if any changed files appear in the file-knowledge map's "Source File" column.
+
+5. **If matches found**, present them to the user:
    ```
    These knowledge artifacts cover files you changed this session:
    - learnings/20260301-auth-bug.md (covers src/auth/login.ts, src/auth/middleware.ts)
@@ -50,7 +56,7 @@ Check whether this session's code changes affect files covered by existing knowl
    Do any of these need updating, or are they still current?
    ```
 
-5. **Based on user response:**
+6. **Based on user response:**
    - **Still current** → update the `Last Verified` date for those entries in the file-knowledge map
    - **Needs updating** → update the artifact now while you're still in context, then update `Last Verified`
    - **Mixed** → handle each artifact individually
