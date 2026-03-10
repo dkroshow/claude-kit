@@ -1,6 +1,6 @@
 # Current Work
 
-**Last Updated**: 2026-03-08 (session 7)
+**Last Updated**: 2026-03-10 (session 8)
 
 ---
 
@@ -14,8 +14,8 @@ _No active items._
 
 | Date | Item | Location |
 |---|---|---|
-| 2026-03-08 | Session resolver (multi-session disambiguation) | `conversation-logger/clogs/session.py`, `.project/active/session-resolver/` |
-| 2026-03-07 | CURRENT_WORK.md thin index + PAST_WORK.md archive | `commands/_wrapup.md`, `project-template/` |
+| 2026-03-10 | search.py enhancements: --messages flag + CWD auto-detection | `conversation-logger/clogs/search.py`, `.project/active/search-enhancements/` |
+| 2026-03-10 | /_research evidence citation requirement | `commands/_research.md` |
 | 2026-03-08 | gauge.py CWD-independent import fix + wrapup staleness rebuild | `conversation-logger/clogs/gauge.py`, `commands/_wrapup.md` |
 
 ---
@@ -30,6 +30,13 @@ _No active items._
 
 ## Session Notes
 
+### 2026-03-10 (session 8)
+- Evaluated 5 recommendations from another Claude; 1 already existed (--project on recent), filtered to 2 worth building
+- Added evidence citation requirement to `/_research` Recommendations template — prevents recommending features that already exist
+- Built `--messages`/`--verbose`/`--limit` on `search.py session` for reading other sessions' transcripts
+- Added CWD auto-detection to `search.py recent` — infers project slug from working directory
+- Key insight: format constraints (cite evidence) are more effective than aspirational rules for preventing incomplete analysis
+
 ### 2026-03-08 (session 7)
 - Fixed gauge.py implicit import: added `sys.path.insert` so it works when called from any CWD
 - Added "rebuild if empty" step to `/_wrapup` Step 3 — backfills file-knowledge-map from existing learnings when map has only headers
@@ -39,12 +46,4 @@ _No active items._
 - Built session resolver: `conversation-logger/clogs/session.py`
 - PPID walk, tmux pane mapping, lsof anchors, history.jsonl fallback
 - Integrated into gauge.py, removed ~60 lines of duplicated detection logic
-- Discovered: anchor UUIDs only in Claude ≤v2.1.66, pgrep -P fails on macOS
-- Known limitation: multi-process same-CWD disambiguation without anchors falls back to mtime
-
-### 2026-03-07 (session 5)
-- Reworked CURRENT_WORK.md as thin index (tables with location pointers, not inline content)
-- Added PAST_WORK.md as lightweight archive, replaced heavyweight CHANGELOG.md
-- Added pruning rules to `/_wrapup` Step 2 (keep 3 recent completed + 3 session notes)
-- Decided against separate `/_tidy` command — wrapup covers cleanup
 
