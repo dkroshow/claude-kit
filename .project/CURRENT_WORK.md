@@ -1,6 +1,6 @@
 # Current Work
 
-**Last Updated**: 2026-03-10 (session 8)
+**Last Updated**: 2026-03-10 (session 9)
 
 ---
 
@@ -16,7 +16,7 @@ _No active items._
 |---|---|---|
 | 2026-03-10 | search.py enhancements: --messages flag + CWD auto-detection | `conversation-logger/clogs/search.py`, `.project/active/search-enhancements/` |
 | 2026-03-10 | /_research evidence citation requirement | `commands/_research.md` |
-| 2026-03-08 | gauge.py CWD-independent import fix + wrapup staleness rebuild | `conversation-logger/clogs/gauge.py`, `commands/_wrapup.md` |
+| 2026-03-10 | Fast-boot path + learnings distillation | `rules/context-loading.md`, `commands/_wrapup.md` |
 
 ---
 
@@ -30,6 +30,12 @@ _No active items._
 
 ## Session Notes
 
+### 2026-03-10 (session 9)
+- Added fast-boot path (Step 0) to `rules/context-loading.md` — projects can declare self-contained context to skip learnings scan
+- Added learnings distillation (Step 4.5) to `commands/_wrapup.md` — auto-triggers when >20 learning files, promotes stable learnings into durable docs
+- Updated wrapup report template to include distillation status
+- Design rationale: solves parallel-session onboarding cost without adding new file types — curation of existing artifacts, not new infrastructure
+
 ### 2026-03-10 (session 8)
 - Evaluated 5 recommendations from another Claude; 1 already existed (--project on recent), filtered to 2 worth building
 - Added evidence citation requirement to `/_research` Recommendations template — prevents recommending features that already exist
@@ -42,8 +48,4 @@ _No active items._
 - Added "rebuild if empty" step to `/_wrapup` Step 3 — backfills file-knowledge-map from existing learnings when map has only headers
 - Root cause: map only populated as side effect of learning capture (Step 4.4), no backfill mechanism existed
 
-### 2026-03-08 (session 6)
-- Built session resolver: `conversation-logger/clogs/session.py`
-- PPID walk, tmux pane mapping, lsof anchors, history.jsonl fallback
-- Integrated into gauge.py, removed ~60 lines of duplicated detection logic
 
