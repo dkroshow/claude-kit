@@ -35,12 +35,23 @@ Update `.project/CURRENT_WORK.md` to reflect the session's work. CURRENT_WORK.md
 
 Check whether this session's code changes affect files covered by existing knowledge artifacts.
 
-1. **Read `.project/file-knowledge-map.md`** — if it doesn't exist, skip this step entirely.
+1. **Read `.project/file-knowledge-map.md`** — if it doesn't exist, create it with the standard header and empty table, then proceed to step 2:
+   ```markdown
+   # File-Knowledge Map
 
-2. **Rebuild if empty** — if the map exists but has no data rows (only headers), scan all project learnings for `## Key Files` sections and backfill the map:
+   > Maps source files to the learnings and docs that cover them.
+   > Maintained by `/_wrapup`. Used by `/_wrapup` staleness check.
+
+   | Source File | Knowledge Artifact | Last Verified |
+   |---|---|---|
+   ```
+
+2. **Rebuild if empty** — if the map has no data rows (only headers), scan all project learnings and backfill the map:
    - Read each learning file in `.project/learnings/` (skip `index.md`)
-   - For each learning with a `## Key Files` section, extract the listed file paths
+   - **Primary source:** Extract file paths from `## Key Files` sections
+   - **Fallback:** If a learning has no `## Key Files` section, scan its body for references to project files (relative paths like `src/foo.ts`, `commands/bar.md`, etc.). Include paths that clearly refer to files in the repo — skip vague references.
    - Add one row per file: `| {source-file-path} | learnings/{filename}.md | {today's date} |`
+   - If any learnings lacked a `## Key Files` section but had file references found via fallback, add a `## Key Files` section to those learnings listing the paths you mapped (keeps them as the source of truth going forward)
    - Report: "Rebuilt file-knowledge map from {N} learnings ({M} file entries)"
 
 3. **Get changed files** — use the git diff/log output from Step 1 to identify source files changed this session.
@@ -103,7 +114,8 @@ Check whether this session produced knowledge that would save a future session t
    [The solution or correct approach]
 
    ## Key Files
-   [Relevant file paths, if applicable]
+   [Relevant file paths — list every source file this learning covers.
+   Include files you changed, debugged, or discovered something about.]
    ```
 
    **For gotchas with multiple failure modes**, replace "What Didn't Work" / "What Works" with a structured table:
@@ -223,32 +235,88 @@ If `--blurb` was passed, proceed to Step 8 after committing.
 
 If `--blurb` was passed, generate a compact reload blurb after wrap-up completes. This blurb is designed to be pasted into a fresh session after `/clear`.
 
-1. **Gather context**:
-   - Run `git branch --show-current` and `git status --porcelain`
-   - Review the conversation for active work and current status
-   - Check `.project/active/` for directories with `plan.md` or `spec.md`
+#### 8a. Gather context
 
-2. **Compose the blurb** — if mid-flow on a feature:
-   ```
-   I'm picking up where a previous session left off.
+- Run `git branch --show-current` and `git status --porcelain`
+- Review the conversation for active work and current status
+- Check `.project/active/` for directories with `plan.md` or `spec.md`
 
-   **Branch:** `{branch}` ({clean/dirty})
-   **Working on:** {feature/task — what it is and current status}
-   **Current phase:** {phase N of plan / "implementation complete, needs X"}
+#### 8b. Write handoff file
 
-   Read these files to get oriented:
-   - `.project/CURRENT_WORK.md` — active work, recent decisions, session notes
-   - `.project/active/{feature}/plan.md` — plan with progress checkboxes
-   - {any other key files}
+Write a targeted context file to `.project/handoffs/{feature-slug}.md`. This file contains **only** the context the next session needs for this specific work stream — not a dump of all project activity.
 
-   {1-2 lines of gotchas or key decisions from this session, if any}
+- **Feature slug**: derived from the feature/task name (kebab-case). Use `general` if the session wasn't focused on a specific feature.
+- **Create `.project/handoffs/` directory** if it doesn't exist.
 
-   Then ask me what I'd like to work on.
-   ```
+**Handoff file template:**
+```markdown
+# Session Handoff: {Feature/Task Name}
 
-3. **Blurb rules**: 5-15 lines, directive, no sensitive info, concrete file paths, only reference files that exist.
+**Written:** {date}
+**Branch:** `{branch}`
+**Status:** {current status — what phase, what's done, what's next}
 
-4. **Output**: Present inside a fenced code block with "Copy this into your next session:" above.
+## Context
+{2-5 sentences: what this work stream is, what was accomplished this session, where it stands now}
+
+## Key Decisions
+{Bulleted list of decisions made this session that the next session needs to know. Omit section if none.}
+
+## Gotchas
+{Anything that would trip up the next session — failed approaches, non-obvious constraints, environment issues. Omit section if none.}
+
+## Key Files
+- `.project/active/{feature}/plan.md` — plan with progress checkboxes
+- `.project/active/{feature}/spec.md` — requirements
+- {other key source files relevant to this stream}
+
+---
+*Delete this file after reading.*
+```
+
+**Handoff file rules:**
+- Max ~50 lines. This is a context bootstrap, not documentation.
+- Only include information relevant to **this work stream**. Do not summarize other streams.
+- Only reference files that exist.
+
+#### 8c. Compose the blurb
+
+**If mid-flow on a feature:**
+```
+I'm picking up where a previous session left off.
+
+**Branch:** `{branch}` ({clean/dirty})
+**Working on:** {feature/task — what it is and current status}
+
+Read `.project/handoffs/{feature-slug}.md` for full session context, then delete it.
+Also read any spec/plan files it references.
+
+Only read `.project/CURRENT_WORK.md` if you're clearly missing project context not covered above.
+
+Then ask me what I'd like to work on.
+```
+
+**If between features / no active work:**
+```
+I'm picking up where a previous session left off.
+
+**Branch:** `{branch}` ({clean/dirty})
+**Status:** {brief summary — e.g. "just finished X, nothing actively in progress"}
+
+Read `.project/handoffs/general.md` for session context, then delete it.
+
+Only read `.project/CURRENT_WORK.md` if you're clearly missing project context not covered above.
+
+Then ask me what I'd like to work on.
+```
+
+#### 8d. Blurb rules
+
+5-15 lines, directive, no sensitive info, concrete file paths, only reference files that exist.
+
+#### 8e. Output
+
+Present inside a fenced code block with "Copy this into your next session:" above.
 
 ---
 
@@ -256,4 +324,4 @@ If `--blurb` was passed, generate a compact reload blurb after wrap-up completes
 - `/_blurb` — standalone reload blurb (without wrap-up)
 - `/_cycle` — the main workflow pipeline
 
-**Last Updated**: 2026-03-05
+**Last Updated**: 2026-03-10

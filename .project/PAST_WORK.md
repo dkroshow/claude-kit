@@ -6,6 +6,8 @@ Archive of completed work, moved here from CURRENT_WORK.md during wrap-up.
 
 | Date | Item | Location |
 |---|---|---|
+| 2026-03-10 | Fix file-knowledge-map staleness "no map" bug | `commands/_wrapup.md` |
+| 2026-03-10 | Fast-boot path + learnings distillation | `rules/context-loading.md`, `commands/_wrapup.md` |
 | 2026-03-08 | gauge.py CWD-independent import fix + wrapup staleness rebuild | `conversation-logger/clogs/gauge.py`, `commands/_wrapup.md` |
 | 2026-03-07 | CURRENT_WORK.md thin index + PAST_WORK.md archive | `commands/_wrapup.md`, `project-template/` |
 | 2026-03-07 | Conversation search integration (CLI + rules + memory agent) | `.project/active/conversation-search/` |

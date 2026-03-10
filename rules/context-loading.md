@@ -2,9 +2,10 @@
 
 ## Before Starting Non-Trivial Work
 
-1. **Read `.project/CURRENT_WORK.md`** — active work context, recent decisions, known issues
-2. **Read the relevant docs** for the area you're working in (check CLAUDE.md for pointers)
-3. **Check prior learnings** — follow the decision tree below
+1. **Check for a handoff file** — if `.project/handoffs/` exists and contains a file matching your task area, read it and delete it after reading. This is targeted context from a previous session and replaces the need to read CURRENT_WORK.md. Skip to step 3.
+2. **Read `.project/CURRENT_WORK.md`** (only if no handoff file was found) — active work context, recent decisions, known issues
+3. **Read the relevant docs** for the area you're working in (check CLAUDE.md for pointers)
+4. **Check prior learnings** — follow the decision tree below
 
 ## Memory Retrieval Decision Tree
 
