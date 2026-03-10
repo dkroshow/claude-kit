@@ -8,9 +8,11 @@ CLI usage:
     python3 search.py search <query> [--limit N]
     python3 search.py recent [--project SLUG] [--limit N]
     python3 search.py session <session-id>
+    python3 search.py session <session-id> --messages [--verbose] [--limit N]
 """
 
 import argparse
+import os
 import sys
 from pathlib import Path
 from typing import Optional, List, Dict
@@ -57,6 +59,32 @@ def session_summary(session_id):
         cols = [d[0] for d in cur.description]
         row = cur.fetchone()
         return dict(zip(cols, row)) if row else None
+    finally:
+        conn.close()
+
+
+def get_session_messages(session_id, include_tool_results=False, limit=None):
+    """Fetch conversation messages for a session, ordered by timestamp."""
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        params = {"session_id": session_id}
+        tool_filter = "" if include_tool_results else "AND NOT COALESCE(m.is_tool_result, false)"
+        limit_clause = ""
+        if limit:
+            limit_clause = "LIMIT %(limit)s"
+            params["limit"] = limit
+        cur.execute(f"""
+            SELECT m.role, m.content, m.timestamp
+            FROM claude_messages m
+            JOIN claude_sessions s ON s.id = m.session_id
+            WHERE s.session_id = %(session_id)s
+              {tool_filter}
+            ORDER BY m.timestamp
+            {limit_clause}
+        """, params)
+        cols = [d[0] for d in cur.description]
+        return [dict(zip(cols, row)) for row in cur.fetchall()]
     finally:
         conn.close()
 
@@ -212,7 +240,10 @@ def cmd_search(args):
 
 
 def cmd_recent(args):
-    results = recent_sessions(limit=args.limit, project_slug=args.project)
+    project = args.project
+    if project is None:
+        project = os.getcwd().replace("/", "-")
+    results = recent_sessions(limit=args.limit, project_slug=project)
     if not results:
         print("No sessions found.")
         return
@@ -249,6 +280,32 @@ def cmd_session(args):
     print(f"  Input tokens:  {_fmt_tokens(result.get('total_input_tokens'))}")
     print(f"  Output tokens: {_fmt_tokens(result.get('total_output_tokens'))}")
 
+    if getattr(args, "messages", False):
+        verbose = getattr(args, "verbose", False)
+        limit = getattr(args, "limit", None)
+        messages = get_session_messages(
+            args.session_id,
+            include_tool_results=verbose,
+            limit=limit,
+        )
+        if not messages:
+            print("\nNo messages found.")
+            return
+        print(f"\n{'─' * 80}")
+        print(f"Messages ({len(messages)}):\n")
+        for msg in messages:
+            ts = _fmt_timestamp(msg.get("timestamp"))
+            if ts and len(ts) > 8:
+                ts = ts.split(" ")[-1] if " " in ts else ts
+            role = msg.get("role", "unknown")
+            content = (msg.get("content") or "").strip()
+            if not verbose and len(content) > 2000:
+                content = content[:2000] + "\n  ... [truncated, use --verbose for full]"
+            indented = content.replace("\n", "\n  ")
+            print(f"[{ts}] {role}:")
+            print(f"  {indented}")
+            print()
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -267,6 +324,9 @@ def main():
 
     p_session = sub.add_parser("session", help="Show session details")
     p_session.add_argument("session_id", help="Claude session UUID")
+    p_session.add_argument("--messages", action="store_true", help="Show conversation messages")
+    p_session.add_argument("--verbose", action="store_true", help="Include tool results and full content")
+    p_session.add_argument("--limit", type=int, default=None, help="Max messages to show")
 
     args = parser.parse_args()
     if not args.command:

@@ -81,7 +81,12 @@ Write to `.project/research/{topic}.md`:
 [What remains unknown or needs further investigation]
 
 ## Recommendations
-[Suggested next steps based on findings]
+
+[Each recommendation must cite source evidence confirming the gap exists]
+
+| # | Recommendation | Evidence (file:line or verified behavior) |
+|---|---|---|
+| 1 | ... | ... |
 
 ---
 
@@ -94,6 +99,7 @@ Write to `.project/research/{topic}.md`:
 - Read existing files before spawning agents (give agents targeted prompts)
 - Wait for all agents to complete before synthesizing
 - Include file:line references for codebase findings
+- For each recommendation, verify the gap exists in source code before including it
 - Keep the document useful for someone who hasn't seen the research process
 
 ---

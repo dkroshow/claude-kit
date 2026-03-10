@@ -10,6 +10,11 @@
 
 Before starting a task, determine whether to check prior learnings:
 
+**Step 0: Does the project declare a fast-boot path?**
+If the project's `CLAUDE.md` declares its context self-contained, points to a specific architecture doc, or explicitly says to skip the learnings scan — read those files and proceed. Only fall back to the full decision tree if you hit a knowledge gap mid-task.
+> YES: Read the declared files and start working. Skip Steps 1-4.
+> NO: Continue to Step 1.
+
 **Step 1: Is this trivial?**
 Typo fixes, formatting changes, simple renames, git operations, one-line changes.
 > YES: Skip memory check entirely. Proceed with the task.
@@ -47,6 +52,8 @@ Past Claude sessions are logged to PostgreSQL and searchable. Use this when lear
 
 ```bash
 python3 ~/claude-kit/conversation-logger/clogs/search.py search "query"
+python3 ~/claude-kit/conversation-logger/clogs/search.py recent              # sessions for current project (auto-detects from CWD)
+python3 ~/claude-kit/conversation-logger/clogs/search.py session <uuid> --messages  # read a session's conversation
 ```
 
 This is a **Tier 2 retrieval action** — use it when the task involves a specific component and learnings don't have a match, or when debugging and you suspect a prior session encountered the same issue.

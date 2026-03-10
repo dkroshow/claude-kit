@@ -141,6 +141,56 @@ Check whether this session produced knowledge that would save a future session t
 
 **Consider escalating to an agent:** If this session involved extended debugging (3+ cycles of hypothesis → test → failure) in a specific domain, suggest creating a domain-expert agent rather than just a learning: "This debugging session was complex enough that a domain-expert agent might be more valuable than a learning. Want me to create an agent spec in `agents/` for [domain area]?"
 
+### Step 4.5. Distill Learnings (if threshold exceeded)
+
+After capturing new learnings, check whether the learnings directory needs distillation.
+
+1. **Count learning files** in `.project/learnings/` (exclude `index.md` and `file-knowledge-map.md`).
+
+2. **If count ≤ 20**, skip this step entirely.
+
+3. **If count > 20**, run distillation:
+
+   a. **Read all learning files** and categorize each as:
+      - **Stable** — confirmed patterns, domain facts, recurring gotchas. Indicators: created >3 days ago, referenced or re-confirmed in multiple sessions, describes a permanent characteristic of the codebase.
+      - **Provisional** — recent discoveries, single-session findings, things that might change. Keep these in learnings.
+
+   b. **Determine promotion targets** for stable learnings:
+      - Domain knowledge, data model facts, architectural patterns → `docs/ARCHITECTURE.md` (create if needed, add `Read docs/ARCHITECTURE.md before starting work.` to CLAUDE.md)
+      - Critical gotchas that affect every session → CLAUDE.md directly
+      - Stable conventions/patterns → project docs or CLAUDE.md, whichever fits
+
+   c. **Present the promotion plan** to the user:
+      ```
+      Learnings distillation triggered ({N} files, threshold is 20).
+
+      Promote to docs/ARCHITECTURE.md:
+      - {learning}: {one-line summary}
+      - ...
+
+      Promote to CLAUDE.md:
+      - {learning}: {one-line summary}
+
+      Keep as provisional ({M} files):
+      - {learning}: {reason}
+      - ...
+
+      Proceed?
+      ```
+
+   d. **On approval:**
+      - Write promoted content into target docs (merge with existing content, don't duplicate)
+      - Delete promoted learning files
+      - Remove their rows from `index.md`
+      - Clean up any orphaned entries in `file-knowledge-map.md`
+
+   e. **Fast-boot declaration** — if the project's CLAUDE.md doesn't already declare a fast-boot path (per `rules/context-loading.md` Step 0), suggest adding one:
+      ```
+      The learnings are now distilled into durable docs. Want me to add a
+      fast-boot declaration to CLAUDE.md so new sessions skip the learnings
+      scan and just read CLAUDE.md + ARCHITECTURE.md?
+      ```
+
 ### Step 5. Update Docs (if applicable)
 
 If the session involved changes that affect documented behavior:
@@ -155,6 +205,7 @@ Wrap-up complete:
 - CURRENT_WORK.md: [what changed]
 - Staleness: [artifacts flagged and resolved, or "no stale artifacts" or "no index yet"]
 - Learnings: [what was captured, or "none this session"]
+- Distillation: [N learnings promoted, M remaining / "not needed (N files, threshold 20)" / "skipped"]
 - Docs: [which files updated, or "none needed"]
 ```
 
