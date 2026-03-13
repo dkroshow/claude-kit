@@ -1,6 +1,6 @@
 # Current Work
 
-**Last Updated**: 2026-03-13 (session 12)
+**Last Updated**: 2026-03-13 (session 13)
 
 ---
 
@@ -18,9 +18,9 @@
 
 | Date | Item | Location |
 |---|---|---|
+| 2026-03-13 | Inline quality integration: global rule, simplify standard, enriched implement workflow | `rules/code-quality.md`, `skills/simplify-standard.md`, `.project/research/inline-quality-integration.md` |
 | 2026-03-13 | Conversation understanding: understand.py CLI + conversation_state.py | `conversation-logger/clogs/understand.py`, `.project/active/conversation-understanding/` |
 | 2026-03-10 | Targeted session handoff for blurb | `commands/_wrapup.md`, `commands/_blurb.md`, `.project/active/targeted-handoff/` |
-| 2026-03-10 | search.py enhancements: --messages flag + CWD auto-detection | `conversation-logger/clogs/search.py`, `.project/active/search-enhancements/` |
 
 ---
 
@@ -35,6 +35,15 @@
 
 ## Session Notes
 
+### 2026-03-13 (session 13)
+- Researched how to integrate /_quality and /simplify into the implementation workflow so code is generated at higher quality from the start
+- Created `rules/code-quality.md` — global rule for inline code review after every logical chunk
+- Created `skills/simplify-standard.md` — referenceable standard distilling code-simplifier agent criteria into 8 review dimensions
+- Enriched `skills/implement-standard.md` Code Quality Gate with inline code review section
+- Updated `commands/_cycle.md` Phase 3: added step 4 "Code Review" + code-simplifier agent in --ralph mode
+- Updated `commands/_implement.md` quality gate reference
+- Research doc: `.project/research/inline-quality-integration.md`
+
 ### 2026-03-13 (session 12)
 - Built conversation understanding system via /_cycle --ralph (Complex tier: research → spec → plan → implement → audit → simplify)
 - New files: `conversation_state.py` (phase detection, health, activity, intent), `understand.py` (CLI with --file/--all/--json)
@@ -47,7 +56,3 @@
 ### 2026-03-10 (session 11)
 - Implemented targeted session handoff: `/_wrapup --blurb` and `/_blurb` now write `.project/handoffs/{feature-slug}.md`
 - Blurb points to the handoff file instead of CURRENT_WORK.md; new session deletes handoff after reading
-
-### 2026-03-10 (session 10)
-- Fixed file-knowledge-map staleness check always reporting "no map"
-- Three root causes: Step 3 skipped when file missing (no bootstrap), rebuild only checked `## Key Files` sections (too narrow), Key Files was optional

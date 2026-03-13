@@ -6,6 +6,7 @@ Archive of completed work, moved here from CURRENT_WORK.md during wrap-up.
 
 | Date | Item | Location |
 |---|---|---|
+| 2026-03-10 | search.py enhancements: --messages flag + CWD auto-detection | `conversation-logger/clogs/search.py`, `.project/active/search-enhancements/` |
 | 2026-03-10 | Fix file-knowledge-map staleness "no map" bug | `commands/_wrapup.md` |
 | 2026-03-10 | Fast-boot path + learnings distillation | `rules/context-loading.md`, `commands/_wrapup.md` |
 | 2026-03-08 | gauge.py CWD-independent import fix + wrapup staleness rebuild | `conversation-logger/clogs/gauge.py`, `commands/_wrapup.md` |

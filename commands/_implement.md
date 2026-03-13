@@ -80,7 +80,7 @@ When invoked:
 
 ### Stage 3: Phase Completion & Validation
 
-1. **Code Quality Gate** — Run per the implement standard
+1. **Code Quality Gate** — Run mechanical checks and inline code review per the implement standard
 2. **Per-Phase Audit** — Answer the three audit questions from the implement standard
 3. **Update Plan Document** — Add implementation notes per the implement standard format
 4. **Synchronize Status**:
