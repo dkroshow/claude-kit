@@ -218,8 +218,9 @@ def main():
             for m in all_metrics:
                 proj = m["project_slug"]
                 # Shorten slug: strip leading dash and common prefix
-                if proj.startswith("-Users-kd-"):
-                    proj = proj[len("-Users-kd-"):]
+                home_prefix = "-" + str(Path.home()).replace("/", "-") + "-"
+                if proj.startswith(home_prefix):
+                    proj = proj[len(home_prefix):]
                 elif proj.startswith("-"):
                     proj = proj[1:]
                 proj = proj[:38]

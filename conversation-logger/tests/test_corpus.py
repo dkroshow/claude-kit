@@ -12,7 +12,8 @@ from understand import analyze_session
 from gauge import extract_usage, compute_metrics
 
 
-CORPUS = Path.home() / ".claude/projects/-Users-kd-Code-mobile-terminal"
+_home_slug = "-" + str(Path.home()).replace("/", "-") + "-"
+CORPUS = Path.home() / f".claude/projects/{_home_slug}Code-mobile-terminal"
 
 
 @pytest.fixture(scope="module")

@@ -10,7 +10,7 @@ python3 ~/claude-kit/conversation-logger/clogs/search.py search "query terms"
 
 # Recent sessions (optionally filter by project)
 python3 ~/claude-kit/conversation-logger/clogs/search.py recent
-python3 ~/claude-kit/conversation-logger/clogs/search.py recent --project -Users-kd-Code-james
+python3 ~/claude-kit/conversation-logger/clogs/search.py recent --project -Users-yourname-Code-projectname
 
 # Session details (message count, tokens, tool calls)
 python3 ~/claude-kit/conversation-logger/clogs/search.py session <session-uuid>
@@ -28,7 +28,6 @@ python3 ~/claude-kit/conversation-logger/clogs/gauge.py --json  # machine-parsea
 
 ## Details
 
-- **Database:** james (PostgreSQL on port 5434)
 - **Tables:** `claude_sessions`, `claude_messages`, `claude_tool_calls`
 - **Search:** Full-text search via `search_vector` (tsvector) on `claude_messages`
-- **Requires:** PostgreSQL running (`docker compose up -d` in james repo if needed)
+- **Requires:** PostgreSQL running with `DATABASE_URL` env var set

@@ -216,7 +216,7 @@ def _session_from_history(project_dir, cwd):
 
     Args:
         project_dir: Path to the ~/.claude/projects/<slug>/ directory (or None)
-        cwd: The project's working directory path (e.g., /Users/kd/claude-kit)
+        cwd: The project's working directory path (e.g., /home/user/my-project)
 
     Returns (session_id, transcript_path) or (None, None).
     """

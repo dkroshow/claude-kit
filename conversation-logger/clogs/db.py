@@ -1,7 +1,7 @@
 """
 PostgreSQL connection and upsert operations for the Claude conversation logger.
 
-Connects to the james database and provides idempotent upsert functions
+Connects to PostgreSQL and provides idempotent upsert functions
 for sessions, messages, and tool calls.
 """
 
@@ -17,9 +17,6 @@ except ImportError:
     sys.exit(1)
 
 
-DEFAULT_DSN = "postgresql://james_user:REDACTED@localhost:5434/james"
-
-
 def _strip_nul(val):
     """Strip NUL (0x00) characters that PostgreSQL text columns reject."""
     if isinstance(val, str):
@@ -28,8 +25,12 @@ def _strip_nul(val):
 
 
 def get_connection():
-    """Get a connection to the james database."""
-    dsn = os.environ.get("DATABASE_URL", DEFAULT_DSN)
+    """Get a connection to the database. Requires DATABASE_URL env var."""
+    dsn = os.environ.get("DATABASE_URL")
+    if not dsn:
+        print("Error: DATABASE_URL environment variable is required.", file=sys.stderr)
+        print("Example: export DATABASE_URL='postgresql://user:pass@localhost:5432/dbname'", file=sys.stderr)
+        sys.exit(1)
     conn = psycopg2.connect(dsn)
     conn.autocommit = False
     return conn

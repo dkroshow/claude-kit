@@ -8,17 +8,13 @@ A globally-installed toolkit (`~/claude-kit/`) that provides commands, rules, ho
 
 ## Cross-Project Role
 
-claude-kit provides **CLI infrastructure** consumed by other repos via subprocess. It is NOT imported as a library. See `~/Code/james/docs/VISION.md` → "Cross-Project Architecture" for the full repo boundary contract.
+claude-kit provides **CLI infrastructure** consumed by other repos via subprocess. It is NOT imported as a library.
 
 Key CLIs exposed by `conversation-logger/clogs/`:
 - `gauge.py --all --json` — context window metrics for active CC sessions
 - `search.py search "query"` — full-text search across conversation history
 - `session.py --all --json` — resolve active CC sessions to transcript files
 - `understand.py --all --json` — structured conversation state (phase, health, context, activity, intent) for active sessions
-
-Consumers (via subprocess, never import):
-- `~/Code/mobile-terminal/` — calls gauge.py for dashboard enrichment
-- `~/Code/james/` — will call search.py, gauge.py, and understand.py for meta-agent orchestration
 
 ## Setup
 
