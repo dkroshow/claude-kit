@@ -1,16 +1,16 @@
 # claude-kit
 
-A best-in-class Claude Code management toolkit. Structured development workflows, cross-session memory, and autonomous execution modes.
+Default Claude Code is great but is not perfect especially as work gets more complex. This is a toolkit to make it better. Structured development workflows, cross-session memory, and autonomous execution modes.
 
 ## Quick Start
 
 ```bash
 # Install globally
-git clone <repo-url> ~/claude-kit
+git clone https://github.com/dkroshow/claude-kit.git ~/claude-kit
 cd ~/claude-kit
 ./setup.sh
 
-# Initialize any project
+# Or initialize any project
 cd your-project
 ~/claude-kit/init.sh
 ```
@@ -18,6 +18,20 @@ cd your-project
 `setup.sh` creates symlinks from `~/.claude/` to the repo's commands, agents, rules, skills, and hooks. If you previously used `agentic-project-init`, it automatically detects and replaces that installation.
 
 `init.sh` copies the project template to `.project/`, creating the directory structure for specs, plans, backlog, and learnings.
+
+## Methodology
+
+Claude Code out of the box tends to dive straight into code. That works for small fixes, but as tasks grow in complexity — touching multiple files, requiring architectural decisions, spanning multiple sessions — you start losing context, repeating mistakes, and getting inconsistent results.
+
+claude-kit addresses this with three ideas:
+
+**1. Right-sized process.** Not every task needs a spec and a plan. `/_cycle` assesses your task and recommends the right tier of process — from a quick implement-and-verify for small changes, to a full spec → plan → implement → audit pipeline for complex features. You get rigor where it matters without ceremony where it doesn't.
+
+**2. Persistent memory across sessions.** Claude Code sessions are ephemeral — when context compresses or you start fresh, discoveries are lost. `/_wrapup` captures structured learnings (gotchas, patterns, environment facts) that future sessions automatically retrieve. You stop re-debugging the same issues.
+
+**3. Autonomous execution with guardrails.** `/_cycle --ralph` runs the full pipeline end-to-end, replacing human checkpoints with agent-driven validation — scope verification, design review, test enforcement, and requirement mapping. It stops only when something actually needs your attention.
+
+Supporting these are `/_research` for deep codebase exploration before committing to a design, and `/_quality` for running all available checks (tests, lint, types, format) with risk-based triage.
 
 ## Commands
 
@@ -48,7 +62,6 @@ cd your-project
 
 ### Flags
 
-- `/_cycle --yolo` — Autonomous, best-judgment defaults, no human gates
 - `/_cycle --ralph` — Autonomous with agent-driven validation at every phase
 - `/_wrapup --blurb` — Wrap up + generate reload blurb
 - `/_wrapup --quick` — Just update CURRENT_WORK.md
@@ -79,11 +92,7 @@ Two complementary layers work alongside Claude Code's native auto-memory:
 
 MEMORY.md is your quick-reference card. Learnings are your knowledge base. They complement, not compete.
 
-## Autonomous Modes
-
-### `--yolo`
-
-Runs the full pipeline with best-judgment defaults. Presents information but doesn't wait for approval. Only stop is the final summary.
+## Autonomous Mode
 
 ### `--ralph`
 

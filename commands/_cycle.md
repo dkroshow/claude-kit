@@ -18,13 +18,11 @@ You are a workflow orchestration agent. Assess task complexity, recommend the ri
 - `skills/implement-standard.md` — quality gates, per-phase audit, implementation notes format
 
 **Flags:**
-- `--yolo`: Bypass all confirmation prompts. Best-judgment defaults, proceed end-to-end. Still present information so the user can see what was decided.
 - `--ralph`: Autonomous with agent-driven validation. Replace human gates with Explore/validation agents. Proceeds unless agents find issues requiring human judgment. Full methodology: scope validation, design-review-refine loop, validation backpressure, agent-verified audit.
 
 When invoked:
 - If task description provided: proceed to Phase 0
 - If no description: ask "What would you like to build or fix?"
-- If `--yolo`: set `yolo = true` for the entire cycle
 - If `--ralph`: set `ralph = true` for the entire cycle
 
 ---
@@ -67,11 +65,9 @@ When invoked:
    Want to proceed with this tier, or override?
    ```
 
-5. **If `yolo`**: Present the recommendation but proceed immediately — do not wait.
+5. **If `ralph`**: Present the recommendation, THEN spawn an Explore agent to validate the estimated scope against the actual codebase. If the agent finds more affected files than estimated (e.g., estimated Standard but agent finds 6+ files), recommend upgrading the tier and WAIT for user confirmation. If scope validates, proceed.
 
-6. **If `ralph`**: Present the recommendation, THEN spawn an Explore agent to validate the estimated scope against the actual codebase. If the agent finds more affected files than estimated (e.g., estimated Standard but agent finds 6+ files), recommend upgrading the tier and WAIT for user confirmation. If scope validates, proceed.
-
-7. **Otherwise**: WAIT for user to confirm or override tier.
+6. **Otherwise**: WAIT for user to confirm or override tier.
 
 ---
 
@@ -85,7 +81,6 @@ When invoked:
 - **Quick tier**: Skip entirely.
 
 **If `ralph`**: Auto-create research for Complex tier. Skip for Standard/Quick.
-**If `yolo`**: Skip research for all tiers.
 
 **If accepted:**
 1. Use `Task` tool with `subagent_type=Explore` for broad searches
@@ -103,7 +98,7 @@ No spec.md or plan.md is created — work directly from the user's description.
 
 Quick tier follows the understand → propose → execute → validate flow:
 1. **Understand**: Read relevant files, understand current behavior
-2. **Propose**: Present the change to the user (skip if `yolo` or `ralph`)
+2. **Propose**: Present the change to the user (skip if `ralph`)
 3. **Execute**: Make the change
 4. **Validate**: Run quality checks, verify the change works
 
@@ -127,7 +122,7 @@ Quick tier follows the understand → propose → execute → validate flow:
 
 3. **Present scoping to user** using the scoping presentation template from the spec standard.
 
-4. **If `yolo` or `ralph`**: Present the scoping summary but proceed immediately — do not wait.
+4. **If `ralph`**: Present the scoping summary but proceed immediately — do not wait.
    **Otherwise**: WAIT for user approval on scoping.
 
 5. **Write spec.md** at `.project/active/{feature-name}/spec.md` using the spec document template from the standard.
@@ -166,8 +161,7 @@ Quick tier follows the understand → propose → execute → validate flow:
    - If issues persist after revision, STOP and present to user
    If no issues: proceed.
 
-7. **If `yolo`**: Present design decisions inline but proceed immediately — do not wait.
-   **Otherwise** (and if not `ralph`): Present design decisions to user if needed → WAIT.
+7. **Otherwise** (and if not `ralph`): Present design decisions to user if needed → WAIT.
 
 8. **Draft implementation strategy**:
    - Phasing rationale
@@ -176,7 +170,7 @@ Quick tier follows the understand → propose → execute → validate flow:
 
 9. **Write plan.md** at `.project/active/{feature-name}/plan.md` using the plan document template from the standard.
 
-10. **If `yolo` or `ralph`**: Present the plan summary but proceed immediately to implementation — do not wait.
+10. **If `ralph`**: Present the plan summary but proceed immediately to implementation — do not wait.
     **Otherwise**: Present plan to user → WAIT for approval.
 
 11. **For Complex tier**: More research cycles, deeper technical detail, more explicit user checkpoints throughout.
@@ -224,7 +218,6 @@ Quick tier follows the understand → propose → execute → validate flow:
 7. **Update plan.md** with implementation notes per the implement standard format (Standard/Complex only).
 
 8. **Handle deviations**: If significant:
-   - **If `yolo`**: Document the deviation in plan.md and keep moving.
    - **If `ralph`**: Document the deviation. If it affects spec requirements, STOP and present to user.
    - **Otherwise**: Present to user before continuing.
 
@@ -274,15 +267,13 @@ Quick tier follows the understand → propose → execute → validate flow:
 
 ### Continuous Flow with Natural Stops
 
-The cycle runs continuously between interaction points. Natural stops (skipped in `--yolo` and `--ralph` modes unless issues found):
+The cycle runs continuously between interaction points. Natural stops (skipped in `--ralph` mode unless issues found):
 - Phase 0: Tier confirmation
 - Phase 0.5: Research offer
 - Phase 1: Scope approval
 - Phase 2: Design decisions (if needed), plan approval
 - Phase 3: Significant deviations only
 - Phase 4: Final summary (always shown)
-
-In `--yolo` mode, the ONLY stop is the final summary in Phase 4.
 
 In `--ralph` mode, stops occur when: validation agents find issues, tests fail after 2 attempts, or deviations affect spec requirements. Otherwise runs end-to-end.
 
@@ -301,8 +292,8 @@ In `--ralph` mode, stops occur when: validation agents find issues, tests fail a
 - Present final summary with proof of verification
 
 **NEVER:**
-- Skip tier assessment (still assessed in `--yolo`/`--ralph`, just not confirmed)
-- Proceed past scope/plan approval without user confirmation (unless `--yolo`/`--ralph`)
+- Skip tier assessment (still assessed in `--ralph`, just not confirmed)
+- Proceed past scope/plan approval without user confirmation (unless `--ralph`)
 - Allow silent failures or placeholder code
 - Self-certify without running actual checks
 

@@ -42,7 +42,6 @@ The cycle command is the orchestrator. You describe what you want to build, and 
 - **Complex** (5+ files, architectural impact) -- Same phases as Standard but with more research cycles, deeper analysis, and more user checkpoints throughout.
 
 **Flags:**
-- `--yolo` -- Autonomous, best-judgment defaults, no human gates. Everything runs end-to-end with the only stop being the final summary.
 - `--ralph` -- Autonomous with agent-driven validation. Spawns validation agents at key checkpoints: scope validation (Phase 0), design review (Phase 2), test enforcement (Phase 3), and requirement mapping (Phase 4).
 
 **When to use:** Any non-trivial task. This is the default entry point.
@@ -196,17 +195,11 @@ They complement each other. MEMORY.md is your quick-reference card. Learnings ar
 
 ---
 
-## Autonomous Execution Modes
-
-### `--yolo` Mode
-
-`/_cycle --yolo` runs the full pipeline with best-judgment defaults and no human gates. It still presents information (tier choice, scope, plan) so you can see what was decided, but proceeds immediately without waiting for approval. The only stop is the final summary in Phase 4.
-
-**When to use:** When you trust the model's judgment and want maximum speed. Good for well-scoped tasks where the requirements are clear.
+## Autonomous Execution Mode
 
 ### `--ralph` Mode
 
-`/_cycle --ralph` runs autonomously but with agent-driven validation at key checkpoints:
+`/_cycle --ralph` runs autonomously with agent-driven validation at key checkpoints:
 
 | Phase | What `--ralph` adds |
 |-------|-------------------|
@@ -215,7 +208,7 @@ They complement each other. MEMORY.md is your quick-reference card. Learnings ar
 | Phase 3 (Implement) | Validation backpressure: tests must pass before phase advances (2-attempt limit) |
 | Phase 4 (Audit) | Spawns agents to verify requirement-to-code mapping, cross-phase integration, test adequacy |
 
-**When to use:** When you want autonomous execution but with more verification than `--yolo` provides. The agents act as automated reviewers.
+**When to use:** When you want autonomous execution with automated reviewers replacing human gates. Stops only when agents find issues, tests fail after 2 attempts, or deviations affect spec requirements.
 
 ---
 
