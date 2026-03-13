@@ -24,7 +24,7 @@ Claude Code ships with real capabilities: extended thinking, sub-agents, auto-me
 
 ## The 10 Commands
 
-claude-kit ships 9 commands organized into three groups: the build pipeline, session continuity, and project management.
+claude-kit ships 10 commands organized into four groups: the build pipeline, session continuity, project management, and quality.
 
 ### The Build Pipeline
 
@@ -138,6 +138,12 @@ Your backlog, epics, active work, and completion tracking live in `.project/` --
 Deep codebase and topic exploration that produces a standalone document with `file:line` references, architecture insights, and recommendations. The 20-minute exploration investment pays off every time someone needs to understand that code area.
 
 **When to use:** Before speccing a feature in an unfamiliar area. When exploration should become a document rather than ephemeral chat.
+
+#### `/_quality` -- Quality Standard On Demand
+
+Standalone entry point for `skills/simplify-standard.md`. Runs both mechanical checks (tests, lint, types, format) and the 8 code review dimensions, with risk-based triage. Fixes low-risk issues directly, flags medium/high-risk for your approval.
+
+**When to use:** Periodic codebase health check, pre-release audit, or any time you want a full quality sweep outside of an implementation cycle.
 
 ---
 
@@ -376,4 +382,5 @@ This copies the project template to `.project/`, creating the directory structur
 | `/_wrapup` | End-of-session context persistence | Updated `CURRENT_WORK.md`, learnings |
 | `/_blurb` | Generate reload blurb for fresh session | Copyable text block |
 | `/_research` | Deep codebase exploration | `.project/research/*.md` |
+| `/_quality` | Run full quality standard on demand | Fixes + report |
 | `/_status` | Project management and status | `.project/` updates |

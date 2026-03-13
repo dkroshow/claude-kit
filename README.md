@@ -1,6 +1,6 @@
 # claude-kit
 
-Default Claude Code is great but is not perfect especially as work gets more complex. This is a toolkit to make it better. Structured development workflows, cross-session memory, and autonomous execution modes.
+Default Claude Code is a wonderful tool but isn't perfect, especially as work gets more complex. This is a toolkit to make it better. Structured development workflows, cross-session memory, and autonomous execution modes.
 
 ## Quick Start
 
@@ -25,7 +25,7 @@ Claude Code out of the box tends to dive straight into code. That works for smal
 
 claude-kit addresses this with three ideas:
 
-**1. Right-sized process.** Not every task needs a spec and a plan. `/_cycle` assesses your task and recommends the right tier of process — from a quick implement-and-verify for small changes, to a full spec → plan → implement → audit pipeline for complex features. You get rigor where it matters without ceremony where it doesn't.
+**1. A full development lifecycle.** Claude Code's built-in plan mode is imperfect, as it doesn't reliably persist across sessions, there's no requirements step, and no audit. Instead, `/_cycle` covers the full loop — requirements with acceptance criteria, phased implementation with quality gates after each phase, and a final audit that maps every requirement to implemented code. It scales to the task: skip the ceremony for one-file fixes, get full rigor for complex features.
 
 **2. Persistent memory across sessions.** Claude Code sessions are ephemeral — when context compresses or you start fresh, discoveries are lost. `/_wrapup` captures structured learnings (gotchas, patterns, environment facts) that future sessions automatically retrieve. You stop re-debugging the same issues.
 
@@ -58,6 +58,7 @@ Supporting this is `/_research` for deep codebase exploration before committing 
 |---------|---------|----------|
 | `/_status` | Status, backlog, history, close, decompose | `.project/` updates |
 | `/_research` | Deep codebase exploration | `.project/research/*.md` |
+| `/_quality` | Run full quality standard on demand | Fixes + report |
 
 ### Flags
 
@@ -105,7 +106,7 @@ Autonomous with agent-driven validation:
 
 ```
 claude-kit/
-├── commands/          # 9 command files (symlinked to ~/.claude/commands/)
+├── commands/          # 10 command files (symlinked to ~/.claude/commands/)
 ├── agents/            # Sub-agents (memory retrieval)
 ├── rules/             # Auto-loaded rules (context-loading, workflow accountability)
 ├── skills/            # Document standards (spec, plan, implement templates)

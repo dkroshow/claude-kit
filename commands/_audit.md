@@ -54,6 +54,6 @@ Note: Per-phase auditing happens during `/_implement` itself. This command is fo
 
 **Related Commands:**
 - Before audit: `/_implement`
-- Quality standard: `skills/simplify-standard.md`
+- Quality checks: `/_quality`
 
 **Last Updated**: 2026-03-02
