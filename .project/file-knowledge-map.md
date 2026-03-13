@@ -22,3 +22,6 @@
 | setup.sh | learnings/20260307-conversation-logger-implementation.md | 2026-03-08 |
 | conversation-logger/clogs/conversation_state.py | learnings/20260313-phase-detection-heuristics.md | 2026-03-13 |
 | conversation-logger/clogs/understand.py | learnings/20260313-phase-detection-heuristics.md | 2026-03-13 |
+| commands/_wrapup.md | learnings/20260313-file-knowledge-map-bootstrap-bug.md | 2026-03-13 |
+| .project/file-knowledge-map.md | learnings/20260313-file-knowledge-map-bootstrap-bug.md | 2026-03-13 |
+| project-template/file-knowledge-map.md | learnings/20260313-file-knowledge-map-bootstrap-bug.md | 2026-03-13 |
