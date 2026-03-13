@@ -69,7 +69,6 @@ Or use `/_cycle` to orchestrate automatically with tiered complexity.
 | `/_blurb` | Generate reload blurb for next session |
 | `/_research` | Deep codebase exploration |
 | `/_status` | Project management and status |
-| `/_quality` | Code quality checks |
 
 ---
 

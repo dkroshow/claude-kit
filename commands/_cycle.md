@@ -202,16 +202,14 @@ Quick tier follows the understand → propose → execute → validate flow:
    - Think critically — does this serve the business goals?
    - Catch edge cases the plan might have missed
 
-3. **Code Quality Gate** — Run mechanical checks (tests, lint, types, formatting) per the implement standard.
+3. **Quality Gate** — Run the full quality pass per `skills/simplify-standard.md`: mechanical checks (tests, lint, types, formatting) then code review (redundancy, naming, nesting, constants, dead code, separation of concerns). Fix issues inline before proceeding.
 
-4. **Code Review** — Re-read the code you just wrote and review per the implement standard's inline code review criteria (redundancy, naming, nesting, constants, dead code, separation of concerns). Fix issues before proceeding. This is part of the quality gate, not a separate pass.
-
-5. **If `ralph`**: Enforce validation backpressure — tests, linting, and type checking must ALL pass before proceeding to the next phase. If they fail:
+4. **If `ralph`**: Enforce validation backpressure — all mechanical checks must pass before proceeding to the next phase. If they fail:
    - Fix the issues
    - Re-run quality gate
    - If still failing after 2 attempts, STOP and present to user
    Analyze test coverage gaps for severity (not just noted — classified as blocking vs acceptable).
-   Additionally, spawn a code-simplifier agent (Task tool with subagent_type=general-purpose, using the code-simplifier agent prompt) to independently review the phase's code changes. If the agent finds issues, fix them before proceeding.
+   Additionally, spawn a review agent (Task tool with subagent_type=general-purpose) to independently review the phase's code changes against `skills/simplify-standard.md`. If the agent finds issues, fix them before proceeding.
 
 6. **Per-Phase Audit** — Answer the three audit questions from the implement standard.
 

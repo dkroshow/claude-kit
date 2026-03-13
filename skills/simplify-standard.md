@@ -1,15 +1,45 @@
 ---
 name: simplify-standard
-description: Code review criteria for inline quality review during implementation
+description: Unified code quality standard — mechanical checks and code review criteria
 ---
 
 # Simplify Standard
 
-Defines the code review criteria applied during per-phase quality review. Referenced by `implement-standard.md` and `/_cycle`.
+The single source of truth for code quality. Combines mechanical verification with judgment-based review. Referenced by `implement-standard.md`, `/_cycle`, and the native `/simplify` command.
 
-## Review Criteria
+## Mechanical Checks
 
-After writing code, re-read it and check each dimension:
+Run all available checks per CLAUDE.md and project conventions:
+
+- **Test suite** — all tests pass, no regressions
+- **Linting** — no violations
+- **Type checking** — no type errors (if applicable)
+- **Formatting** — clean
+
+If no quality commands are documented in CLAUDE.md, check for common patterns (package.json scripts, Makefile targets, pyproject.toml).
+
+### Risk Triage
+
+**Low-risk** (fix directly):
+- Formatting inconsistencies
+- Unused imports
+- Missing trailing newlines
+- Whitespace issues
+
+**Medium-risk** (present to user):
+- Test failures in non-critical paths
+- Linting warnings in changed code
+- Type errors in peripheral code
+
+**High-risk** (stop and present):
+- Test failures in business logic
+- Security-related warnings
+- Interface/contract changes
+- Regression indicators
+
+## Code Review
+
+After mechanical checks pass, re-read the code you wrote and check each dimension:
 
 ### 1. Redundancy
 - Duplicate logic across functions or blocks
@@ -50,7 +80,7 @@ After writing code, re-read it and check each dimension:
 - Mixed abstraction levels within a single function
 - Business logic tangled with I/O or formatting
 
-## Applying the Review
+## Applying the Standard
 
 - Fix issues inline — this is not a separate pass
 - Only review code you just wrote or modified

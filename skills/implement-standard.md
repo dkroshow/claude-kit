@@ -9,30 +9,7 @@ Defines quality gates, per-phase audit criteria, progress tracking format, and c
 
 ## Code Quality Gate
 
-Run per CLAUDE.md and project conventions after each implementation phase:
-
-### Mechanical Checks
-- **Test suite** — all tests pass, no regressions
-- **Linting** — no violations
-- **Type checking** — no type errors (if applicable)
-- **Formatting** — clean
-
-Triage issues by risk:
-- **Low-risk** (formatting, unused imports): fix directly
-- **Medium/high-risk** (test failures in business logic, interface changes): flag to user before proceeding
-
-### Code Review (Inline)
-
-After mechanical checks pass, re-read the code you just wrote and review per `skills/simplify-standard.md`:
-
-1. **Redundancy** — duplicate logic, repeated computations, copy-paste patterns
-2. **Naming** — do names communicate intent?
-3. **Nesting** — can deep conditionals be flattened with early returns?
-4. **Constants** — magic strings/numbers that should be extracted
-5. **Dead code** — unused variables, unreachable branches, commented-out code
-6. **Separation of concerns** — functions doing too many things
-
-Fix issues inline before proceeding. This is part of the quality gate, not a separate pass.
+Run `skills/simplify-standard.md` after each implementation phase — mechanical checks (tests, lint, types, format) followed by code review (the 8 review dimensions). Fix issues inline before proceeding.
 
 ## Per-Phase Audit
 

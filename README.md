@@ -31,7 +31,7 @@ claude-kit addresses this with three ideas:
 
 **3. Autonomous execution with guardrails.** `/_cycle --ralph` runs the full pipeline end-to-end, replacing human checkpoints with agent-driven validation — scope verification, design review, test enforcement, and requirement mapping. It stops only when something actually needs your attention.
 
-Supporting these are `/_research` for deep codebase exploration before committing to a design, and `/_quality` for running all available checks (tests, lint, types, format) with risk-based triage.
+Supporting this is `/_research` for deep codebase exploration before committing to a design.
 
 ## Commands
 
@@ -58,7 +58,6 @@ Supporting these are `/_research` for deep codebase exploration before committin
 |---------|---------|----------|
 | `/_status` | Status, backlog, history, close, decompose | `.project/` updates |
 | `/_research` | Deep codebase exploration | `.project/research/*.md` |
-| `/_quality` | Code quality checks (lint, test, format) | Fixes + report |
 
 ### Flags
 
@@ -106,7 +105,7 @@ Autonomous with agent-driven validation:
 
 ```
 claude-kit/
-├── commands/          # 10 command files (symlinked to ~/.claude/commands/)
+├── commands/          # 9 command files (symlinked to ~/.claude/commands/)
 ├── agents/            # Sub-agents (memory retrieval)
 ├── rules/             # Auto-loaded rules (context-loading, workflow accountability)
 ├── skills/            # Document standards (spec, plan, implement templates)
