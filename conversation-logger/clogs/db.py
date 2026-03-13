@@ -8,7 +8,6 @@ for sessions, messages, and tool calls.
 import os
 import json
 import sys
-import re
 
 try:
     import psycopg2
@@ -46,11 +45,11 @@ def upsert_session(cur, session):
         INSERT INTO claude_sessions (
             session_id, transcript_path, project_path, project_slug,
             git_branch, claude_version, model, permission_mode,
-            started_at, ended_at
+            started_at, ended_at, compression_count, last_compressed_at
         ) VALUES (
             %(session_id)s, %(transcript_path)s, %(project_path)s, %(project_slug)s,
             %(git_branch)s, %(claude_version)s, %(model)s, %(permission_mode)s,
-            %(started_at)s, %(ended_at)s
+            %(started_at)s, %(ended_at)s, %(compression_count)s, %(last_compressed_at)s
         )
         ON CONFLICT (session_id) DO UPDATE SET
             transcript_path = EXCLUDED.transcript_path,
@@ -62,6 +61,8 @@ def upsert_session(cur, session):
             permission_mode = COALESCE(EXCLUDED.permission_mode, claude_sessions.permission_mode),
             started_at = LEAST(EXCLUDED.started_at, claude_sessions.started_at),
             ended_at = GREATEST(EXCLUDED.ended_at, claude_sessions.ended_at),
+            compression_count = COALESCE(EXCLUDED.compression_count, claude_sessions.compression_count),
+            last_compressed_at = GREATEST(EXCLUDED.last_compressed_at, claude_sessions.last_compressed_at),
             updated_at = now()
         RETURNING id
     """, session)

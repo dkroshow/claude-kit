@@ -16,7 +16,9 @@
 | rules/context-loading.md | learnings/20260306-staleness-at-write-time.md | 2026-03-10 |
 | conversation-logger/clogs/gauge.py | learnings/20260307-context-window-compression.md | 2026-03-08 |
 | conversation-logger/clogs/session.py | learnings/20260308-session-resolver-signals.md | 2026-03-08 |
-| conversation-logger/clogs/parser.py | learnings/20260307-conversation-logger-implementation.md | 2026-03-08 |
-| conversation-logger/clogs/db.py | learnings/20260307-conversation-logger-implementation.md | 2026-03-08 |
+| conversation-logger/clogs/parser.py | learnings/20260307-conversation-logger-implementation.md | 2026-03-13 |
+| conversation-logger/clogs/db.py | learnings/20260307-conversation-logger-implementation.md | 2026-03-13 |
 | conversation-logger/hooks/on-assistant-turn.sh | learnings/20260307-conversation-logger-implementation.md | 2026-03-08 |
 | setup.sh | learnings/20260307-conversation-logger-implementation.md | 2026-03-08 |
+| conversation-logger/clogs/conversation_state.py | learnings/20260313-phase-detection-heuristics.md | 2026-03-13 |
+| conversation-logger/clogs/understand.py | learnings/20260313-phase-detection-heuristics.md | 2026-03-13 |

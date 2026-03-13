@@ -126,6 +126,7 @@ def parse_transcript(filepath):
     """
     entries = []
     turn_durations = {}
+    compression_events = []
 
     path = Path(filepath)
     if not path.exists():
@@ -158,10 +159,18 @@ def parse_transcript(filepath):
 
             if entry_type in ("user", "assistant"):
                 entries.append(entry)
-            elif entry_type == "system" and entry.get("subtype") == "turn_duration":
-                parent = entry.get("parentUuid")
-                if parent:
-                    turn_durations[parent] = entry.get("durationMs")
+            elif entry_type == "system":
+                subtype = entry.get("subtype")
+                if subtype == "turn_duration":
+                    parent = entry.get("parentUuid")
+                    if parent:
+                        turn_durations[parent] = entry.get("durationMs")
+                elif subtype == "compact_boundary":
+                    compression_events.append({
+                        "type": "compression",
+                        "timestamp": entry.get("timestamp"),
+                        "uuid": entry.get("uuid"),
+                    })
 
     if not entries:
         return None
@@ -297,8 +306,15 @@ def parse_transcript(filepath):
         session["started_at"] = timestamps[0]
         session["ended_at"] = timestamps[-1]
 
+    # Add compression metadata to session
+    session["compression_count"] = len(compression_events)
+    session["last_compressed_at"] = (
+        compression_events[-1]["timestamp"] if compression_events else None
+    )
+
     return {
         "session": session,
         "messages": messages,
         "tool_results": tool_results,
+        "events": compression_events,
     }
