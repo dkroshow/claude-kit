@@ -97,10 +97,10 @@ MEMORY.md is your quick-reference card. Learnings are your knowledge base. They 
 ### `--ralph`
 
 Autonomous with agent-driven validation:
-- **Phase 0:** Explore agent validates scope assessment
-- **Phase 2:** Validation agents check risky design decisions
-- **Phase 3:** Tests must pass before phase advances (backpressure)
-- **Phase 4:** Agents verify requirement-to-code mapping and test adequacy
+- Explore agent validates scope assessment
+- Validation agents check risky design decisions
+- Tests must pass before phase advances (backpressure)
+- Agents verify requirement-to-code mapping and test adequacy
 
 ## Repo Structure
 
