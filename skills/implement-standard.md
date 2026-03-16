@@ -9,7 +9,7 @@ Defines quality gates, per-phase audit criteria, progress tracking format, and c
 
 ## Code Quality Gate
 
-Run `skills/simplify-standard.md` after each implementation phase — mechanical checks (tests, lint, types, format) followed by code review (the 8 review dimensions). Fix issues inline before proceeding.
+Run `skills/simplify-standard.md` after each implementation phase — mechanical checks (tests, lint, types, format) followed by code review (the 8 review dimensions). Fix issues inline before proceeding. Do not dismiss findings as "intentional" or "by design" — either fix them or flag them to the user.
 
 ## Per-Phase Audit
 

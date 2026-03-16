@@ -209,7 +209,11 @@ Quick tier follows the understand → propose → execute → validate flow:
    - Re-run quality gate
    - If still failing after 2 attempts, STOP and present to user
    Analyze test coverage gaps for severity (not just noted — classified as blocking vs acceptable).
-   Additionally, spawn a review agent (Task tool with subagent_type=general-purpose) to independently review the phase's code changes against `skills/simplify-standard.md`. If the agent finds issues, fix them before proceeding.
+   Additionally, spawn a review agent (Task tool with subagent_type=general-purpose) to independently review the phase's code changes against `skills/simplify-standard.md`. **Review findings are blockers** — apply the same backpressure as mechanical checks:
+   - Fix each finding
+   - Re-spawn review agent to verify fixes
+   - If findings persist after 2 attempts, STOP and present to user
+   Do NOT reclassify findings as "intentional" or "by design." If you disagree with a finding, that is a STOP condition — present it to the user and let them decide.
 
 6. **Per-Phase Audit** — Answer the three audit questions from the implement standard.
 
