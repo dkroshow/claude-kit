@@ -127,8 +127,10 @@ Quick tier follows the understand → propose → execute → validate flow:
 
 5. **Write spec.md** at `.project/active/{feature-name}/spec.md` using the spec document template from the standard.
 
-6. **Codex Deliberation on Spec** (Standard/Complex):
+6. **Codex Deliberation on Spec** (Standard/Complex) — **MANDATORY, do not skip regardless of task simplicity**:
    Run a Refinement deliberation loop (per `commands/_deliberate.md`) on spec.md. Codex reviews the spec for missing requirements, ambiguous acceptance criteria, hidden dependencies, scope leaks, and risky assumptions. Instruct Codex to focus only on whether requirements are clear, complete, and testable — NOT to suggest design or implementation choices.
+
+   You MUST write spec.md to disk and run `codex exec` against it. Do not skip this step because the task seems simple, the scope is clear, or you think it would be faster. The deliberation exists precisely to catch what you missed.
 
    Run rounds until Codex finds no blocking issues, then present the revised spec noting what changed.
 
@@ -178,8 +180,10 @@ Quick tier follows the understand → propose → execute → validate flow:
 
 9. **Write plan.md** at `.project/active/{feature-name}/plan.md` using the plan document template from the standard.
 
-10. **Codex Deliberation on Plan** (Standard/Complex):
+10. **Codex Deliberation on Plan** (Standard/Complex) — **MANDATORY, do not skip regardless of task simplicity**:
     Run a Refinement deliberation loop (per `commands/_deliberate.md`) on plan.md. Codex reviews the plan against spec.md for technical mistakes, gaps in spec coverage, phase ordering issues, missing dependencies, and implementation risks.
+
+    You MUST write plan.md to disk and run `codex exec` against it. Do not skip this step because the task seems simple, the scope is clear, or you think it would be faster. The deliberation exists precisely to catch what you missed.
 
     Run rounds until Codex finds no blocking issues, then present the revised plan noting what changed.
 
@@ -308,6 +312,7 @@ In `--ralph` mode, stops occur when: validation agents find issues, tests fail a
 
 **NEVER:**
 - Skip tier assessment (still assessed in `--ralph`, just not confirmed)
+- Skip Codex deliberation on spec or plan for Standard/Complex tiers — this is mandatory even if the task seems simple, the scope is obvious, or you think it would be faster. No exceptions unless the user explicitly says to skip it.
 - Proceed past scope/plan approval without user confirmation (unless `--ralph`)
 - Allow silent failures or placeholder code
 - Self-certify without running actual checks
