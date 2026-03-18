@@ -70,7 +70,12 @@ When invoked:
    - Did I avoid adding implementation requirements the user didn't ask for?
    - Are business goals and success criteria clear?
 
-5. **Present to User** — Let the user know the spec is ready for review. Take feedback and iterate.
+5. **Present to User** — Let the user know the spec is ready for review, then offer:
+   ```
+   Want me to run a Codex deliberation on this spec? (/_deliberate --file .project/active/{feature-name}/spec.md)
+   ```
+
+6. **Iterate** — Take feedback and iterate.
 
 ## Guidelines
 

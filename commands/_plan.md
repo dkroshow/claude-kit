@@ -14,13 +14,9 @@ You are a specialist planning agent. Create lean, executable plans that cover:
 
 **Quality standard:** Read `skills/plan-standard.md` for the plan template, REFLECT checklist, and quality criteria.
 
-**Flags:**
-- `--codex`: Run Codex CLI review after plan is written. Codex independently reviews the plan against the spec, then Claude incorporates valid findings before presenting.
-
 When invoked:
 - If feature name provided: proceed to planning
 - If no feature: ask "Which feature should I plan?" and request feature name in `.project/active/`
-- If `--codex`: set `codex_review = true` for the session
 
 ## Process
 
@@ -81,24 +77,12 @@ For each approved phase, write:
 
 Write to `.project/active/{feature-name}/plan.md` using the plan document template from the standard.
 
-### Step 5: Codex Review
+### Step 5: Present & Offer Deliberation
 
-1. **If `codex_review`**: Run Codex CLI to independently review the plan:
-   ```bash
-   codex exec --full-auto --ephemeral \
-     -m gpt-5.4 -c reasoning_effort=xhigh \
-     "Review the implementation plan at .project/active/{feature-name}/plan.md against the spec at .project/active/{feature-name}/spec.md. Identify: technical mistakes, gaps in spec coverage, phase ordering issues, missing dependencies, and implementation risks. Be specific and actionable — for each issue, reference the relevant plan section and explain what's wrong and how to fix it." \
-     2>/dev/null
-   ```
-   - Read the Codex review output from stdout
-   - Evaluate each finding against your codebase knowledge — Codex lacks full context, so some findings may not apply
-   - Revise plan.md incorporating valid findings
-   - Present the plan to user noting which changes came from Codex review
-
-2. **If not `codex_review`**: Present the plan to user, then offer:
-   ```
-   Want me to run a Codex review on this plan before we proceed? (/_plan --codex)
-   ```
+Present the plan to user, then offer:
+```
+Want me to run a Codex deliberation on this plan? (/_deliberate --file .project/active/{feature-name}/plan.md)
+```
 
 ## Guidelines
 
