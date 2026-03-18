@@ -170,10 +170,23 @@ Quick tier follows the understand → propose → execute → validate flow:
 
 9. **Write plan.md** at `.project/active/{feature-name}/plan.md` using the plan document template from the standard.
 
-10. **If `ralph`**: Present the plan summary but proceed immediately to implementation — do not wait.
+10. **Codex Plan Review** (Standard/Complex):
+    Run Codex CLI to get an independent review of the plan against the spec:
+    ```bash
+    codex exec --full-auto --ephemeral \
+      -m gpt-5.4 -c reasoning_effort=xhigh \
+      "Review the implementation plan at .project/active/{feature-name}/plan.md against the spec at .project/active/{feature-name}/spec.md. Identify: technical mistakes, gaps in spec coverage, phase ordering issues, missing dependencies, and implementation risks. Be specific and actionable — for each issue, reference the relevant plan section and explain what's wrong and how to fix it." \
+      2>/dev/null
+    ```
+    - Read the Codex review output from stdout
+    - Evaluate each finding against your codebase knowledge — Codex lacks full context, so some findings may not apply
+    - Revise plan.md incorporating valid findings
+    - Track what was changed in your plan presentation (e.g., "Codex review caught X, revised plan to Y")
+
+11. **If `ralph`**: Present the plan summary (including Codex review changes) but proceed immediately to implementation — do not wait.
     **Otherwise**: Present plan to user → WAIT for approval.
 
-11. **For Complex tier**: More research cycles, deeper technical detail, more explicit user checkpoints throughout.
+12. **For Complex tier**: More research cycles, deeper technical detail, more explicit user checkpoints throughout.
 
 ---
 
