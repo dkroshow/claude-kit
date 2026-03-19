@@ -68,7 +68,7 @@ For each round (1 to N):
 1. **Send document to Codex for review**:
    ```bash
    codex exec --full-auto --ephemeral \
-     -m gpt-5.4 -c reasoning_effort=xhigh \
+     -c reasoning_effort=xhigh \
      "{refinement_prompt}"
    ```
 
@@ -134,7 +134,7 @@ For each round (1 to N):
 2. **Send to Codex**:
    ```bash
    codex exec --full-auto --ephemeral \
-     -m gpt-5.4 -c reasoning_effort=xhigh \
+     -c reasoning_effort=xhigh \
      "{debate_prompt}"
    ```
 
